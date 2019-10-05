@@ -6,7 +6,7 @@ A continuous integration environment set up in [Oracle Cloud][].
 
 This repository is an example and a personal exercise to use the
 [Oracle Cloud Free][] to create a continuous environment wherein
-a source code from a repository is compiled, built and tested and then released.
+a source code from a repository is compiled, built, tested and then released.
 
 ## Process
 1. A commit is made to the master branch
