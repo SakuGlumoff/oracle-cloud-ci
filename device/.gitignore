@@ -1,3 +1,14 @@
 # STMCubeMX
 .mxproject
 build
+
+# GCC
+*.d
+*.o
+*.obj
+*.elf
+*.map
+*.exe
+*.out
+*.bin
+*.hex
