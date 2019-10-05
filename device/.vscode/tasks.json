@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "make clean",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build: Debug",
+            "type": "shell",
+            "command": "make config=DEBUG",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build: Unit test",
+            "type": "shell",
+            "command": "make config=UNIT_TEST",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build: Integration test",
+            "type": "shell",
+            "command": "make config=INTEGRATION_TEST",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build: Release",
+            "type": "shell",
+            "command": "make config=RELEASE",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
