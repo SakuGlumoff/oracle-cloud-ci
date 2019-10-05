@@ -1,0 +1,3 @@
+[submodule "device/lib/DebugPrint-GCC"]
+	path = device/lib/DebugPrint-GCC
+	url = git@github.com:SakuRautio/DebugPrint-GCC.git
