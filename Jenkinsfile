@@ -15,6 +15,9 @@ pipeline {
       }
       steps {
         dir(path: './device') {
+          sh 'git submodule sync --recursive'
+          sh 'git submodule update --init --remote --recursive'
+          sh 'git submodule update'
           sh 'make clean'
           echo 'Building with config UNIT_TEST'
           sh 'make config=UNIT_TEST'
@@ -35,6 +38,9 @@ pipeline {
       }
       steps {
         dir(path: './device') {
+          sh 'git submodule sync --recursive'
+          sh 'git submodule update --init --remote --recursive'
+          sh 'git submodule update'
           sh 'make clean'
           echo 'Building with config INTEGRATION_TEST'
           sh 'make config=INTEGRATION_TEST'
@@ -65,6 +71,9 @@ pipeline {
       }
       steps {
         dir(path: './device') {
+          sh 'git submodule sync --recursive'
+          sh 'git submodule update --init --remote --recursive'
+          sh 'git submdoule update'
           sh 'make clean'
           echo 'Building with config RELEASE'
           sh 'make config=RELEASE'
