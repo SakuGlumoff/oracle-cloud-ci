@@ -2,7 +2,7 @@
 #include "debug_print.h"
 #include "error.h"
 
-#define ASSERT_EQUALS(a, b) if (a != b) { DBG_PRINT_ERROR("Assert fail"); \ return ERROR_ASSERT_FAIL; }
+#define ASSERT_EQUALS(a, b) if (a != b) { DBG_PRINT_ERROR("Assert fail"); return ERROR_ASSERT_FAIL; }
 
 static int add(void)
 {

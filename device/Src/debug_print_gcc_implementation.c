@@ -6,7 +6,8 @@
 #endif
 
 #if defined(INTEGRATION_TEST)
-#include "stm32f4xx_hal_usart.h"
+#include "usart.h"
+#include "stm32f4xx_hal_uart.h"
 #endif
 
 int debug_print_callback(char *debugMessage, unsigned int length)
@@ -15,7 +16,7 @@ int debug_print_callback(char *debugMessage, unsigned int length)
     printf("%s", debugMessage);
     return ERROR_OK;
 #elif defined(INTEGRATION_TEST)
-    if (HAL_USART_Transmit_IT(&huart2, (uint8_t*)debugMessage, (uint16_t)length) == HAL_OK)
+    if (HAL_UART_Transmit_IT(&huart2, (uint8_t*)debugMessage, (uint16_t)length) == HAL_OK)
     {
         return ERROR_OK;
     }
