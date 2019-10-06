@@ -35,35 +35,43 @@ BUILD_DIR = build
 # source
 ######################################
 # C sources
+ifeq ($(config),UNIT_TEST)
 C_SOURCES =  \
-Src/main.c \
-Src/stm32f4xx_it.c \
-Src/stm32f4xx_hal_msp.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
-Src/system_stm32f4xx.c \
-Src/debug_print_gcc_implementation.c \
-Src/unit_test.c \
-Src/integration_test.c \
-lib/DebugPrint-GCC/debug_print.c \
-Src/gpio.c \
-Src/usart.c \
-Src/button.c \
-Src/led.c
+	Src/main.c \
+	Src/debug_print_gcc_implementation.c \
+	Src/unit_test.c \
+	lib/DebugPrint-GCC/debug_print.c
+else
+C_SOURCES =  \
+	Src/main.c \
+	Src/stm32f4xx_it.c \
+	Src/stm32f4xx_hal_msp.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
+	Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
+	Src/system_stm32f4xx.c \
+	Src/debug_print_gcc_implementation.c \
+	Src/unit_test.c \
+	Src/integration_test.c \
+	lib/DebugPrint-GCC/debug_print.c \
+	Src/gpio.c \
+	Src/usart.c \
+	Src/button.c \
+	Src/led.c
+endif
 
 # ASM sources
 ASM_SOURCES =  \
@@ -89,6 +97,7 @@ SZ = $(PREFIX)size
 endif
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
+EXE = gcc
 
 #######################################
 # CFLAGS
@@ -130,8 +139,11 @@ C_INCLUDES =  \
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-
+ifeq ($(config),UNIT_TEST)
+CFLAGS = $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -D $(config)
+else
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections -D $(config)
+endif
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
@@ -139,7 +151,9 @@ endif
 
 
 # Generate dependency information
+ifneq ($(config),UNIT_TEST)
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
+endif
 
 
 #######################################
@@ -154,7 +168,12 @@ LIBDIR =
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 # default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
+ifeq ($(config),UNIT_TEST)
+ALL_TARGET = $(BUILD_DIR)/$(TARGET).exe
+else
+ALL_TARGET = $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
+endif
+all: $(ALL_TARGET)
 
 
 #######################################
@@ -164,9 +183,15 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
 # list of ASM program objects
+ifneq ($(config),UNIT_TEST)
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
+endif
 
+ifeq ($(config),UNIT_TEST)
+$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
+	gcc -c $(CFLAGS) $< -o $@
+else
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
 	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
@@ -176,12 +201,16 @@ $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	$(SZ) $@
+endif
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(HEX) $< $@
 
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@
+
+$(BUILD_DIR)/$(TARGET).exe: $(OBJECTS) Makefile
+	$(EXE) $(OBJECTS) -o $@
 
 $(BUILD_DIR):
 	mkdir $@

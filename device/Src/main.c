@@ -57,12 +57,14 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+#if defined(UNIT_TEST)
+#define HAL_RCC_ClockConfig(x,y) HAL_OK
+#define HAL_RCC_OscConfig(x) HAL_OK
+#endif
 /* USER CODE END 0 */
 
 /**
@@ -73,6 +75,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   int error = ERROR_OK;
+#if !defined(UNIT_TEST)
   /* USER CODE END 1 */
 
 
@@ -96,6 +99,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+#endif /* !UNIT_TEST */
   DBG_PRINT_TRACE("Device begin");
 #if defined(UNIT_TEST)
   error = unit_test_init();
