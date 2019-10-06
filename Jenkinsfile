@@ -72,7 +72,7 @@ pipeline {
         dir(path: './device') {
           sh 'git submodule sync --recursive'
           sh 'git submodule update --init --remote --recursive'
-          sh 'git submdoule update'
+          sh 'git submodule update'
           sh 'make clean'
           echo 'Building with config RELEASE'
           sh 'make config=RELEASE'
