@@ -9,6 +9,7 @@ pipeline {
 
       }
       steps {
+        sh 'whoami; uname -n; pwd; echo $PATH;'
         dir(path: './device') {
           sh 'git submodule sync --recursive'
           sh 'git submodule update --init --remote --recursive'
@@ -32,6 +33,7 @@ pipeline {
 
       }
       steps {
+        sh 'whoami; uname -n; pwd; echo $PATH;'
         dir(path: './device') {
           sh 'git submodule sync --recursive'
           sh 'git submodule update --init --remote --recursive'
@@ -54,6 +56,7 @@ pipeline {
 
       }
       steps {
+        sh 'whoami; uname -n; pwd; echo $PATH;'
         echo 'TODO: Run integration tests'
       }
     }
@@ -65,6 +68,7 @@ pipeline {
 
       }
       steps {
+        sh 'whoami; uname -n; pwd; echo $PATH;'
         dir(path: './device') {
           sh 'git submodule sync --recursive'
           sh 'git submodule update --init --remote --recursive'
