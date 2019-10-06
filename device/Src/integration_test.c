@@ -1,27 +1,33 @@
 #include "integration_test.h"
 #include "debug_print.h"
 #include "error.h"
+#include "button.h"
+#include "led.h"
+#include "stm32f4xx_hal.h"
 
 #define ASSERT_EQUALS(a, b) if (a != b) { DBG_PRINT_ERROR("Assert fail"); return ERROR_ASSERT_FAIL; }
 
-static int add(void)
+static int test_button(void)
 {
-    int a = 1;
-    int b = 2;
+    int realButtonState = 0;
+    const int expectedButtonState = 1;
 
-    int addition = a + b;
-    ASSERT_EQUALS(addition, 3);
+    realButtonState = button_readState();
+    ASSERT_EQUALS(realButtonState, expectedButtonState);
 
     return ERROR_OK;
 }
 
-static int multiply(void)
+static int test_led(void)
 {
-    int a = 1;
-    int b = 2;
+    int realLedState = 0;
+    const int expectedLedState = 0;
 
-    int multiplication = a * b;
-    ASSERT_EQUALS(multiplication, 2);
+    led_turnOn();
+    HAL_Delay(1000);
+    led_turnOff();
+    realLedState = led_readState();
+    ASSERT_EQUALS(realLedState, expectedLedState);
 
     return ERROR_OK;
 }
@@ -35,8 +41,8 @@ typedef struct IntegrationTest
 #define INTEGRATION_TEST_COUNT (2)
 static const integration_test_t INTEGRATION_TESTS[INTEGRATION_TEST_COUNT] =
 {
-    {"Addition", add},
-    {"Multiply", multiply}
+    {"Button", test_button},
+    {"Led", test_led}
 };
 
 int integration_test_init(void)
@@ -59,7 +65,7 @@ int integration_test_run(void)
     int i = 0;
     for (i = 0; i < INTEGRATION_TEST_COUNT; i++)
     {
-        DBG_PRINTF_TRACE("Integration test: run (%d/%d): %s", i, INTEGRATION_TEST_COUNT, INTEGRATION_TESTS[i].name);
+        DBG_PRINTF_TRACE("Integration test: run (%d/%d): %s", i+1, INTEGRATION_TEST_COUNT, INTEGRATION_TESTS[i].name);
         testsRan++;
         int testStatus = INTEGRATION_TESTS[i].testFunc();
         if (testStatus)

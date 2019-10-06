@@ -26,8 +26,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "error.h"
+#include "debug_print.h"
 #include "unit_test.h"
 #include "integration_test.h"
+#include "led.h"
+#include "stm32f4xx_hal.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,28 +96,45 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  DBG_PRINT_TRACE("Device begin");
 #if defined(UNIT_TEST)
   error = unit_test_init();
-  if (error)
-    return error;
+  if (error) return error;
 
   error = unit_test_run();
-  if (error)
-    return error;
+  if (error) return error;
 #elif defined(INTEGRATION_TEST)
   error = integration_test_init();
-  if (error)
-    return error;
+  if (error) return error;
 
   error = integration_test_run();
+  if (error) return error;
+#elif defined(RELEASE) || defined(DEBUG)
+  DBG_PRINT_DEBUG("Turning led on");
+  error = led_turnOn();
   if (error)
+  {
+    DBG_PRINTF_ERROR("Turning led on error: %d", error);
     return error;
+  }
+
+  HAL_Delay(2000); // Delay for the human eye
+
+  error = led_turnOff();
+  DBG_PRINT_DEBUG("Turning led off");
+  if (error)
+  {
+    DBG_PRINTF_ERROR("Turning led off error: %d", error);
+    return error;
+  }
 #else
+#error "Unknown configuration"
 #endif //Configurations
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  DBG_PRINT_TRACE("Device end");
   return error;
   while (1)
   {

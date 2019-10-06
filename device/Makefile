@@ -61,7 +61,9 @@ Src/unit_test.c \
 Src/integration_test.c \
 lib/DebugPrint-GCC/debug_print.c \
 Src/gpio.c \
-Src/usart.c
+Src/usart.c \
+Src/button.c \
+Src/led.c
 
 # ASM sources
 ASM_SOURCES =  \

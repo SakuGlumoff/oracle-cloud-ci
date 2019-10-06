@@ -59,7 +59,7 @@ int unit_test_run(void)
     int i = 0;
     for (i = 0; i < UNIT_TEST_COUNT; i++)
     {
-        DBG_PRINTF_TRACE("Unit test: run (%d/%d): %s", i, UNIT_TEST_COUNT, UNIT_TESTS[i].name);
+        DBG_PRINTF_TRACE("Unit test: run (%d/%d): %s", i+1, UNIT_TEST_COUNT, UNIT_TESTS[i].name);
         testsRan++;
         int testStatus = UNIT_TESTS[i].testFunc();
         if (testStatus)

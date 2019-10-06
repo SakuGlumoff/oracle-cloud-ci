@@ -6,5 +6,8 @@
     "files.eol": "\r\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "files.associations": {
+        "button.h": "c"
+    }
 }
