@@ -43,7 +43,7 @@ pipeline {
           sh 'make config=INTEGRATION_TEST'
           fileExists './build/device.bin'
           echo 'Archiving built binary'
-          archiveArtifacts(artifacts: './build/device.bin', onlyIfSuccessful: true)
+          archiveArtifacts(artifacts: 'build/device.bin', onlyIfSuccessful: true)
         }
 
       }
@@ -77,7 +77,7 @@ pipeline {
           echo 'Building with config RELEASE'
           sh 'make config=RELEASE'
           fileExists './build/device.bin'
-          archiveArtifacts(artifacts: './build/device.bin', onlyIfSuccessful: true)
+          archiveArtifacts(artifacts: 'build/device.bin', onlyIfSuccessful: true)
         }
 
       }
