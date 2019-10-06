@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "error.h"
 #include "unit_test.h"
+#include "integration_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,6 +102,13 @@ int main(void)
   if (error)
     return error;
 #elif defined(INTEGRATION_TEST)
+  error = integration_test_init();
+  if (error)
+    return error;
+
+  error = integration_test_run();
+  if (error)
+    return error;
 #else
 #endif //Configurations
   /* USER CODE END 2 */

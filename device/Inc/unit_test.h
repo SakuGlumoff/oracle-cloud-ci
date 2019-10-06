@@ -4,4 +4,4 @@
 int unit_test_init(void);
 int unit_test_run(void);
 
-#endif
+#endif /* UNIT_TEST_H */

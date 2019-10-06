@@ -1,4 +1,4 @@
-#include "unit_test.h"
+#include "integration_test.h"
 #include "debug_print.h"
 #include "error.h"
 
@@ -26,20 +26,20 @@ static int multiply(void)
     return ERROR_OK;
 }
 
-typedef struct UnitTest
+typedef struct IntegrationTest
 {
     char *name;
     int (*testFunc)(void);
-} unit_test_t;
+} integration_test_t;
 
-#define UNIT_TEST_COUNT (2)
-static const unit_test_t UNIT_TESTS[UNIT_TEST_COUNT] =
+#define INTEGRATION_TEST_COUNT (2)
+static const integration_test_t INTEGRATION_TESTS[INTEGRATION_TEST_COUNT] =
 {
     {"Addition", add},
     {"Multiply", multiply}
 };
 
-int unit_test_init(void)
+int integration_test_init(void)
 {
     int error = ERROR_OK;
 
@@ -48,20 +48,20 @@ int unit_test_init(void)
     return error;
 }
 
-int unit_test_run(void)
+int integration_test_run(void)
 {
     int error = ERROR_OK;
     int testsRan = 0;
     int testsFailed = 0;
     int testsSucceeded = 0;
 
-    DBG_PRINT_TRACE("Unit test: start");
+    DBG_PRINT_TRACE("Integration test: start");
     int i = 0;
-    for (i = 0; i < UNIT_TEST_COUNT; i++)
+    for (i = 0; i < INTEGRATION_TEST_COUNT; i++)
     {
-        DBG_PRINTF_TRACE("Unit test: run (%d/%d): %s", i, UNIT_TEST_COUNT, UNIT_TESTS[i].name);
+        DBG_PRINTF_TRACE("Integration test: run (%d/%d): %s", i, INTEGRATION_TEST_COUNT, INTEGRATION_TESTS[i].name);
         testsRan++;
-        int testStatus = UNIT_TESTS[i].testFunc();
+        int testStatus = INTEGRATION_TESTS[i].testFunc();
         if (testStatus)
         {
             testsFailed++;
@@ -71,7 +71,7 @@ int unit_test_run(void)
             testsSucceeded++;
         }
     }
-    DBG_PRINTF_TRACE("Unit test: end: { Total: %d, Failed: %d, Succeeded: %d }", testsRan, testsFailed, testsSucceeded);
+    DBG_PRINTF_TRACE("Integration test: end: { Total: %d, Failed: %d, Succeeded: %d }", testsRan, testsFailed, testsSucceeded);
 
     return error;
 }
