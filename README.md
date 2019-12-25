@@ -2,7 +2,7 @@
 
 A continuous integration environment set up in [Oracle Cloud][].
 
-[![Build Status](http://132.145.232.104:8080/job/oracle-cloud-ci/job/master/badge/icon)](http://132.145.232.104:8080/job/oracle-cloud-ci/job/master/)
+[![Build Status](http://130.61.12.254:8080/job/oracle-cloud-ci/job/master/badge/icon)](http://132.145.232.104:8080/job/oracle-cloud-ci/job/master/)
 
 ## About
 
